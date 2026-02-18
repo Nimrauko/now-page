@@ -8,12 +8,17 @@
 
   <style>
     :root{
-      --bg:#0b0b10; --card:#12121a; --text:#e8e8f0; --muted:#a8a8c0;
-      --line:#242436; --accent:#8b5cf6;
+      --bg:#0b0b10;
+      --card: rgba(18,18,26,.80);
+      --text:#e8e8f0;
+      --muted:#a8a8c0;
+      --line:#242436;
+      --accent:#8b5cf6;
+      --accent2:#22c55e;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
     }
-
     *{box-sizing:border-box}
-
     body{
       margin:0;
       font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;
@@ -23,201 +28,362 @@
         radial-gradient(900px 600px at 85% 20%, #0c2a3d 0%, transparent 60%),
         var(--bg);
     }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:980px; margin:0 auto; padding:30px 18px 70px}
 
-    .wrap{
-      max-width:860px;
-      margin:0 auto;
-      padding:28px 18px 60px;
+    /* Header */
+    header{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin:10px 0 22px;
     }
-
-    h1{
-      font-size:40px;
-      margin-bottom:6px;
-    }
-
-    .sub{
+    h1{font-size:44px; line-height:1.1; margin:0}
+    .sub{color:var(--muted); margin:0; max-width:70ch}
+    .meta{color:var(--muted); font-size:13px}
+    .pillrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px}
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(18,18,26,.55);
+      padding:6px 10px;
+      border-radius:999px;
       color:var(--muted);
+      font-size:13px
     }
+    .hr{height:1px; background:var(--line); margin:18px 0 0}
 
-    .meta{
-      margin-top:8px;
-      font-size:13px;
-      color:var(--muted);
-    }
-
+    /* Layout */
     .grid{
-      margin-top:20px;
       display:grid;
-      gap:14px;
-      grid-template-columns:1fr;
+      gap:16px;
+      grid-template-columns: 1fr;
     }
-
-    @media(min-width:700px){
-      .grid{grid-template-columns:1fr 1fr}
+    @media (min-width: 860px){
+      .grid{ grid-template-columns: 1fr 1fr; }
     }
 
     .card{
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:14px;
       background:var(--card);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
     }
-
-    .card h2{
-      margin-top:0;
-      font-size:16px;
-      margin-bottom:10px;
-    }
-
-    .mediaList{
+    .cardhead{
       display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .mediaItem{
-      display:flex;
-      gap:12px;
       align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:12px;
+    }
+    .card h2{
+      font-size:16px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .badge{
+      font-size:12px;
+      color:var(--muted);
       border:1px solid var(--line);
-      border-radius:12px;
-      padding:8px;
-      background:#0f0f18;
+      padding:4px 8px;
+      border-radius:999px;
+      background:rgba(11,11,16,.35);
+      white-space:nowrap;
     }
 
-    .thumb{
-      width:60px;
-      height:60px;
-      border-radius:10px;
+    /* “Apple Music / Steam” media tiles */
+    .mediaGrid{
+      display:grid;
+      gap:12px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 520px){
+      .mediaGrid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .tile{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(36,36,54,.9);
+      background: rgba(11,11,16,.40);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+    .tile:hover{
+      transform: translateY(-2px);
+      border-color: rgba(139,92,246,.7);
+      background: rgba(18,18,26,.75);
+    }
+
+    .cover{
+      width:140px;
+      height:140px;
+      border-radius:16px;
       object-fit:cover;
       border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 14px 32px rgba(0,0,0,.35);
+      flex: 0 0 auto;
     }
 
-    .footer{
-      margin-top:30px;
+    .tmeta{min-width:0}
+    .tmeta .title{
+      margin:0;
+      font-weight:650;
+      line-height:1.25;
+      font-size:15px;
+    }
+    .tmeta .subtitle{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+    .tmeta .tags{
+      margin-top:10px;
       display:flex;
-      gap:10px;
+      gap:8px;
+      flex-wrap:wrap;
     }
-
-    .btn{
+    .tag{
+      font-size:12px;
       border:1px solid var(--line);
-      border-radius:10px;
-      padding:8px 12px;
+      padding:4px 8px;
+      border-radius:999px;
+      color:var(--muted);
+      background:rgba(18,18,26,.55);
+    }
+
+    /* Simple bullet list */
+    ul{margin:0; padding-left:18px}
+    li{margin:6px 0}
+
+    /* Footer buttons */
+    .footer{margin-top:26px; display:flex; gap:10px; flex-wrap:wrap}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:rgba(18,18,26,.65);
       color:var(--text);
-      background:var(--card);
-      text-decoration:none;
+      transition:border-color .15s ease, transform .15s ease;
     }
-
-    .btn:hover{
-      border-color:var(--accent);
-    }
-
+    .btn:hover{border-color: rgba(139,92,246,.7); transform: translateY(-1px)}
+    .btn small{color:var(--muted)}
   </style>
 </head>
 <body>
+  <main class="wrap">
+    <header>
+      <h1 id="title">Now</h1>
+      <p class="sub" id="subtitle">What I’m up to lately.</p>
+      <div class="pillrow" id="pills"></div>
+      <div class="meta" id="updated"></div>
+      <div class="hr"></div>
+    </header>
 
-<main class="wrap">
+    <section class="grid" id="cards"></section>
 
-  <h1>Now — The Angry Leftist</h1>
+    <footer class="footer">
+      <a class="btn" href="https://github.com/Nimrauko"><strong>GitHub</strong> <small>@Nimrauko</small></a>
+      <a class="btn" href="https://nimrauko.github.io/Now-Page/"><strong>Refresh</strong> <small>Now-Page</small></a>
+    </footer>
+  </main>
 
-  <div class="sub">
-    Playing WoW and FFXIV, listening to Stevie, and keeping my personal web alive.
-  </div>
+  <script>
+    // ✅ EDIT ONLY THIS BLOCK
+    const nowData = {
+      name: "Angry Leftist",
+      location: "Clear Lake, IA",
+      lastUpdated: "2026-02-18",
+      statusLine: "Playing WoW and FFXIV, listening to Stevie, and keeping my personal web alive.",
+      pills: ["Gaming", "Music", "Horror nights", "Web tinkering"],
 
-  <div class="meta">
-    Last updated: February 18, 2026 • Clear Lake Iowa
-  </div>
+      sections: [
+        {
+          title: "Listening",
+          badge: "On repeat",
+          media: [
+            {
+              title: "Trouble in Shangri-La",
+              subtitle: "Stevie Nicks",
+              img: "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/4b/e3/0b/4be30b3e-d75c-22c9-24b5-561b88b04bcb/mzi.nomcygyd.jpg/600x600bb.jpg",
+              href: null,
+              tags: ["Album"]
+            }
+          ]
+        },
+        {
+          title: "Watching",
+          badge: "Movie night",
+          media: [
+            {
+              title: "In the Heat of the Night",
+              subtitle: "Watching",
+              img: "https://is1-ssl.mzstatic.com/image/thumb/Video/9b/05/16/mzl.zaoejbes.jpg/600x600bb.jpg",
+              href: null,
+              tags: ["Film"]
+            }
+          ]
+        },
+        {
+          title: "Playing",
+          badge: "Current rotation",
+          media: [
+            {
+              title: "Final Fantasy XIV",
+              subtitle: "Playing",
+              img: "https://i.redd.it/ekh3unbvuxac1.jpeg",
+              href: null,
+              tags: ["MMO"]
+            },
+            {
+              title: "World of Warcraft: Midnight",
+              subtitle: "Hyped for the reveal",
+              img: "https://img.g2a.com/700x394/1x1x0/world-of-warcraft-midnight-expansion-to-be-revealed-at-gamescom-2025/94310a96f75646dfa22a1436",
+              href: null,
+              tags: ["MMO", "Expansion"]
+            }
+          ]
+        },
+        {
+          title: "Notes",
+          badge: "Quick bullets",
+          items: [
+            "Keeping this Now page updated.",
+            "Cozy nights, games, and rebuilding my web corner."
+          ]
+        }
+      ]
+    };
 
-  <div class="grid" id="cards"></div>
+    // Render (no edits needed below)
+    document.title = `Now — ${nowData.name}`;
+    document.getElementById("title").textContent = `Now — ${nowData.name}`;
+    document.getElementById("subtitle").textContent = nowData.statusLine;
 
-  <div class="footer">
-    <a class="btn" href="https://www.angryleftist.com">Blog</a>
-    <a class="btn" href="https://nimrauko.github.io/now-page/">Reload</a>
-  </div>
+    // Pills
+    const pillsEl = document.getElementById("pills");
+    pillsEl.innerHTML = "";
+    nowData.pills.forEach(p => {
+      const span = document.createElement("span");
+      span.className = "pill";
+      span.textContent = p;
+      pillsEl.appendChild(span);
+    });
 
-</main>
+    // Updated line
+    const updated = new Date(nowData.lastUpdated + "T00:00:00");
+    const fmt = updated.toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
+    document.getElementById("updated").textContent = `Last updated: ${fmt} • ${nowData.location}`;
 
-<script>
+    // Cards
+    const cards = document.getElementById("cards");
+    cards.innerHTML = "";
 
-const sections = [
+    nowData.sections.forEach(sec => {
+      const card = document.createElement("article");
+      card.className = "card";
 
-  {
-    title: "Listening",
-    media: [
-      {
-        text: "Trouble in Shangri-La — Stevie Nicks",
-        img: "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/4b/e3/0b/4be30b3e-d75c-22c9-24b5-561b88b04bcb/mzi.nomcygyd.jpg/600x600bb.jpg"
+      const head = document.createElement("div");
+      head.className = "cardhead";
+
+      const h2 = document.createElement("h2");
+      h2.textContent = sec.title;
+
+      head.appendChild(h2);
+
+      if (sec.badge) {
+        const b = document.createElement("div");
+        b.className = "badge";
+        b.textContent = sec.badge;
+        head.appendChild(b);
       }
-    ]
-  },
 
-  {
-    title: "Watching",
-    media: [
-      {
-        text: "In the Heat of the Night",
-        img: "https://is1-ssl.mzstatic.com/image/thumb/Video/9b/05/16/mzl.zaoejbes.jpg/600x600bb.jpg"
+      card.appendChild(head);
+
+      if (sec.media && Array.isArray(sec.media)) {
+        const grid = document.createElement("div");
+        grid.className = "mediaGrid";
+
+        sec.media.forEach(m => {
+          const tile = document.createElement(m.href ? "a" : "div");
+          tile.className = "tile";
+          if (m.href) {
+            tile.href = m.href;
+            tile.target = "_blank";
+            tile.rel = "noopener noreferrer";
+          }
+
+          const img = document.createElement("img");
+          img.className = "cover";
+          img.alt = `${m.title}${m.subtitle ? " — " + m.subtitle : ""}`;
+          img.loading = "lazy";
+          img.referrerPolicy = "no-referrer";
+          img.src = m.img;
+
+          img.onerror = () => {
+            img.onerror = null;
+            img.src = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+              <svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'>
+                <rect width='100%' height='100%' fill='#12121a'/>
+                <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+                  fill='#a8a8c0' font-family='system-ui' font-size='18'>no image</text>
+              </svg>
+            `);
+          };
+
+          const meta = document.createElement("div");
+          meta.className = "tmeta";
+
+          const t = document.createElement("p");
+          t.className = "title";
+          t.textContent = m.title;
+
+          const st = document.createElement("p");
+          st.className = "subtitle";
+          st.textContent = m.subtitle || "";
+
+          meta.appendChild(t);
+          meta.appendChild(st);
+
+          if (m.tags && m.tags.length) {
+            const tags = document.createElement("div");
+            tags.className = "tags";
+            m.tags.forEach(tag => {
+              const span = document.createElement("span");
+              span.className = "tag";
+              span.textContent = tag;
+              tags.appendChild(span);
+            });
+            meta.appendChild(tags);
+          }
+
+          tile.appendChild(img);
+          tile.appendChild(meta);
+
+          grid.appendChild(tile);
+        });
+
+        card.appendChild(grid);
       }
-    ]
-  },
 
-  {
-    title: "Playing",
-    media: [
-      {
-        text: "Final Fantasy XIV",
-        img: "https://i.redd.it/ekh3unbvuxac1.jpeg"
-      },
-      {
-        text: "World of Warcraft: Midnight",
-        img: "https://img.g2a.com/700x394/1x1x0/world-of-warcraft-midnight-expansion-to-be-revealed-at-gamescom-2025/94310a96f75646dfa22a1436"
+      if (sec.items && Array.isArray(sec.items)) {
+        const ul = document.createElement("ul");
+        sec.items.forEach(it => {
+          const li = document.createElement("li");
+          li.textContent = it;
+          ul.appendChild(li);
+        });
+        card.appendChild(ul);
       }
-    ]
-  }
 
-];
-
-const cards = document.getElementById("cards");
-
-sections.forEach(sec=>{
-
-  const card=document.createElement("div");
-  card.className="card";
-
-  const title=document.createElement("h2");
-  title.textContent=sec.title;
-
-  card.appendChild(title);
-
-  const list=document.createElement("div");
-  list.className="mediaList";
-
-  sec.media.forEach(item=>{
-
-    const row=document.createElement("div");
-    row.className="mediaItem";
-
-    const img=document.createElement("img");
-    img.className="thumb";
-    img.src=item.img;
-
-    const text=document.createElement("div");
-    text.textContent=item.text;
-
-    row.appendChild(img);
-    row.appendChild(text);
-
-    list.appendChild(row);
-
-  });
-
-  card.appendChild(list);
-
-  cards.appendChild(card);
-
-});
-
-</script>
-
+      cards.appendChild(card);
+    });
+  </script>
 </body>
 </html>
