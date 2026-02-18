@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Now — Your Name</title>
+  <meta name="description" content="What I’m up to now." />
+  <style>
+    :root{
+      --bg:#0b0b10; --card:#12121a; --text:#e8e8f0; --muted:#a8a8c0;
+      --line:#242436; --accent:#8b5cf6; --accent2:#22c55e;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, #1a1033 0%, transparent 60%),
+        radial-gradient(900px 600px at 85% 20%, #0c2a3d 0%, transparent 60%),
+        var(--bg);
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:860px; margin:0 auto; padding:28px 18px 60px}
+    header{margin:18px 0 22px}
+    h1{font-size:40px; line-height:1.15; margin:0 0 8px}
+    .sub{color:var(--muted); margin:0}
+    .pillrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .pill{
+      border:1px solid var(--line);
+      background:rgba(18,18,26,.65);
+      padding:6px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px
+    }
+    .grid{display:grid; gap:14px; grid-template-columns:1fr}
+    @media (min-width: 760px){ .grid{grid-template-columns:1fr 1fr} }
+    .card{
+      border:1px solid var(--line);
+      background:rgba(18,18,26,.75);
+      border-radius:16px;
+      padding:16px 16px 14px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    .card h2{font-size:16px; margin:0 0 10px; letter-spacing:.2px}
+    ul{margin:0; padding-left:18px}
+    li{margin:6px 0}
+    .meta{margin-top:18px; color:var(--muted); font-size:13px}
+    .footer{margin-top:22px; display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      border:1px solid var(--line); border-radius:12px; padding:10px 12px;
+      background:rgba(18,18,26,.75); color:var(--text);
+    }
+    .btn strong{color:var(--accent2)}
+    .hr{height:1px; background:var(--line); margin:18px 0}
+
+    /* --- Media list (thumbnails) --- */
+    .mediaList{display:flex; flex-direction:column; gap:10px; margin:0; padding:0; list-style:none}
+    .mediaLink{display:block}
+    .mediaItem{
+      display:flex; gap:12px; align-items:center;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
+      background:rgba(11,11,16,.35);
+    }
+    .thumb{
+      width:56px; height:56px; border-radius:12px; flex:0 0 auto;
+      object-fit:cover; border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .mediaText{margin:0; color:var(--text)}
+    .mediaText small{display:block; color:var(--muted); margin-top:2px}
+    .mediaLink{color:inherit}
+    .mediaLink:hover{text-decoration:none}
+    .mediaLink:hover .mediaText{
+      text-decoration:underline;
+      text-decoration-color: rgba(139,92,246,.6);
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1 id="title">Now</h1>
+      <p class="sub" id="subtitle">What I’m up to lately.</p>
+      <div class="pillrow" id="pills"></div>
+      <div class="meta" id="lastUpdated"></div>
+      <div class="hr"></div>
+    </header>
+
+    <section class="grid" id="cards"></section>
+
+    <footer class="footer" id="links"></footer>
+  </main>
+
+  <script>
+    // ✅ EDIT ONLY THIS BLOCK to update your Now page
+    const nowData = {
+      name: "Your Name",
+      location: "East Texas",
+      lastUpdated: "2026-02-18",
+      statusLine: "Currently focusing on health + cozy hobbies + getting life a little more organized.",
+      pills: ["Gaming", "Writing", "Home projects", "Learning"],
+
+      // You can mix & match:
+      // - sections with `items: [...]` (simple bullets)
+      // - sections with `media: [...]` (thumbnail + text + optional link)
+      sections: [
+        {
+          title: "Right now",
+          items: [
+            "Doing: ___",
+            "Avoiding: ___",
+            "Prioritizing: ___"
+          ]
+        },
+        {
+          title: "Listening",
+          media: [
+            {
+              text: "Trouble in Shangri-La — Stevie Nicks (2001)",
+              img: "https://upload.wikimedia.org/wikipedia/en/7/7b/Stevie_Nicks_-_Trouble_in_Shangri-La.png",
+              href: "https://en.wikipedia.org/wiki/Trouble_in_Shangri-La",
+              alt: "Trouble in Shangri-La album art"
+            }
+          ]
+        },
+        {
+          title: "Watching",
+          media: [
+            {
+              text: "___",
+              img: "https://via.placeholder.com/96x96.png?text=Poster",
+              href: "#",
+              alt: "Poster"
+            }
+          ]
+        },
+        {
+          title: "Playing",
+          media: [
+            {
+              text: "World of Warcraft — ___",
+              img: "https://via.placeholder.com/96x96.png?text=Game",
+              href: "#",
+              alt: "Game art"
+            },
+            {
+              text: "Final Fantasy XIV — ___",
+              img: "https://via.placeholder.com/96x96.png?text=FFXIV",
+              href: "#",
+              alt: "FFXIV art"
+            }
+          ]
+        },
+        {
+          title: "Projects",
+          items: [
+            "Site refresh: ___",
+            "Budget/home: ___",
+            "Creative: ___"
+          ]
+        }
+      ],
+
+      links: [
+        { label: "Home", href: "/" },
+        { label: "Blog", href: "/blog" },
+        { label: "Contact", href: "mailto:you@example.com" }
+      ]
+    };
+
+    // Render (no need to edit below here)
+    document.title = `Now — ${nowData.name}`;
+    document.getElementById("title").textContent = `Now — ${nowData.name}`;
+    document.getElementById("subtitle").textContent = nowData.statusLine;
+
+    const pillsEl = document.getElementById("pills");
+    pillsEl.innerHTML = "";
+    nowData.pills.forEach(p => {
+      const span = document.createElement("span");
+      span.className = "pill";
+      span.textContent = p;
+      pillsEl.appendChild(span);
+    });
+
+    const updated = new Date(nowData.lastUpdated + "T00:00:00");
+    const fmt = updated.toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" });
+    document.getElementById("lastUpdated").textContent =
+      `Last updated: ${fmt} • ${nowData.location}`;
+
+    const cards = document.getElementById("cards");
+    cards.innerHTML = "";
+
+    nowData.sections.forEach(sec => {
+      const card = document.createElement("article");
+      card.className = "card";
+
+      const h2 = document.createElement("h2");
+      h2.textContent = sec.title;
+      card.appendChild(h2);
+
+      // Media sections (thumbnail rows)
+      if (sec.media && Array.isArray(sec.media)) {
+        const ul = document.createElement("ul");
+        ul.className = "mediaList";
+
+        sec.media.forEach(m => {
+          const li = document.createElement("li");
+          li.className = "mediaItem";
+
+          const img = document.createElement("img");
+          img.className = "thumb";
+          img.alt = m.alt || m.text || "";
+          img.loading = "lazy";
+          img.referrerPolicy = "no-referrer"; // helps some hosts that reject referrers
+          img.src = m.img;
+
+          // Fallback if image fails
+          img.onerror = () => {
+            img.onerror = null;
+            img.src = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+              <svg xmlns='http://www.w3.org/2000/svg' width='112' height='112'>
+                <rect width='100%' height='100%' fill='#12121a'/>
+                <text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'
+                  fill='#a8a8c0' font-family='system-ui' font-size='14'>no image</text>
+              </svg>
+            `);
+          };
+
+          const textWrap = document.createElement("div");
+          const p = document.createElement("p");
+          p.className = "mediaText";
+          p.textContent = m.text || "";
+
+          if (m.note) {
+            const small = document.createElement("small");
+            small.textContent = m.note;
+            p.appendChild(small);
+          }
+
+          textWrap.appendChild(p);
+
+          li.appendChild(img);
+          li.appendChild(textWrap);
+
+          // Make it clickable if href exists
+          if (m.href && m.href !== "#") {
+            const a = document.createElement("a");
+            a.className = "mediaLink";
+            a.href = m.href;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.appendChild(li);
+            ul.appendChild(a);
+          } else {
+            ul.appendChild(li);
+          }
+        });
+
+        card.appendChild(ul);
+
+      // Simple bullet sections
+      } else if (sec.items && Array.isArray(sec.items)) {
+        const ul = document.createElement("ul");
+        sec.items.forEach(it => {
+          const li = document.createElement("li");
+          li.textContent = it;
+          ul.appendChild(li);
+        });
+        card.appendChild(ul);
+      }
+
+      cards.appendChild(card);
+    });
+
+    const linksEl = document.getElementById("links");
+    linksEl.innerHTML = "";
+    nowData.links.forEach(l => {
+      const a = document.createElement("a");
+      a.className = "btn";
+      a.href = l.href;
+      a.textContent = l.label;
+      linksEl.appendChild(a);
+    });
+  </script>
+</body>
+</html>
